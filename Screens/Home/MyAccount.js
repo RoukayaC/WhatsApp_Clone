@@ -6,14 +6,40 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
+import firebase from "../../Config";
 
-export default function MyAccount() {
+const auth = firebase.auth();
+const database = firebase.database();
+const ref_database = database.ref();
+const ref_listaccount = ref_database.child("ListAccounts");
+
+export default function MyAccount(props) {
+  const currentUserid = props.route.params.currentUserid;
+
   const [pseudo, setPseudo] = useState("");
   const [numero, setNumero] = useState();
+
+  const [isDefaultImage, setIsDefaultImage] = useState(true);
+  const [localUriImage, setLocalUriImage] = useState();
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setIsDefaultImage(false);
+      setLocalUriImage(result.assets[0].uri);
+    }
+  };
   return (
     <ImageBackground
-      source={require("../../assets/bg.jpg")}
+      source={require("../../assets/profil.png")}
       style={styles.container}
     >
       <Text
@@ -23,18 +49,28 @@ export default function MyAccount() {
           fontWeight: "bold",
         }}
       >
-        Settings
+        MyAccount
       </Text>
-      <Image
-        source={require("../../assets/profil.png")}
-        style={{
-          width: 250,
-          height: 250,
-          backgroundColor: "#0052",
-          borderRadius: 40,
-          marginBottom: 50,
+      <TouchableOpacity
+        onPress={() => {
+          pickImage();
         }}
-      ></Image>
+      >
+        <Image
+          // source={
+          //   isDefaultImage
+          //     ? require("../../assets/profil.png")
+          //     : { uri: localUriImage }
+          // }
+          style={{
+            width: 250,
+            height: 250,
+            backgroundColor: "#0052",
+            borderRadius: 40,
+            marginBottom: 50,
+          }}
+        ></Image>
+      </TouchableOpacity>
       <TextInput
         onChangeText={(ch) => {
           setPseudo(ch);
@@ -51,8 +87,26 @@ export default function MyAccount() {
         placeholderTextColor={"white"}
         placeholder="le numero"
       ></TextInput>
-      <Button onPress={() => {}} title="Save"></Button>
-      <Button title="Deconnect"></Button>
+      <Button
+        onPress={() => {
+          const key = ref_listaccount.push().key; // Unused variable
+          const ref_account = ref_listaccount.child(currentUserid);
+          ref_account.set({
+            id: currentUserid,
+            pseudo,
+            numero,
+          });
+        }}
+        title="Save"
+      />
+      <Button
+        onPress={() => {
+          auth.signOut().then(() => {
+            props.navigation.replace("Auth");
+          });
+        }}
+        title="Deconnect"
+      ></Button>
     </ImageBackground>
   );
 }

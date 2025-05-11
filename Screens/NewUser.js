@@ -1,18 +1,24 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import { useState } from "react";
 import {
   Button,
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
   View,
-  ImageBackground,
 } from "react-native";
+import firebase from "../Config";
+const auth = firebase.auth();
 
 export default function NewUser(props) {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
+
   return (
     <ImageBackground
-      source={require("../assets/bg.jpg")}
+      source={require("../assets/profil.png")}
       style={styles.container}
     >
       <View
@@ -33,42 +39,55 @@ export default function NewUser(props) {
             fontWeight: "bold",
           }}
         >
-          Create Account
+          Create account
         </Text>
 
         <TextInput
+          onChangeText={(ch) => setEmail(ch)}
           keyboardType="email-address"
           style={styles.input}
-          placeholder="name@gmail.com"
+          placeholder="name@site.com"
         ></TextInput>
-
         <TextInput
+          onChangeText={(ch) => setPassword(ch)}
           style={styles.input}
-          placeholder="Password"
-          secureTextEntry={true}
+          placeholder="***password***"
         ></TextInput>
-
         <TextInput
+          onChangeText={(ch) => setConfirmPassword(ch)}
           style={styles.input}
-          placeholder="Confirm password"
-          secureTextEntry={true}
+          placeholder="***confirm password***"
         ></TextInput>
-
         <View style={{ flexDirection: "row", gap: 15 }}>
           <Button
             onPress={() => {
-              props.navigation.replace("Home");
+              if (password == confirmPassword) {
+                auth
+                  .createUserWithEmailAndPassword(email, password)
+                  .then(() => {
+                    const currentUserid = auth.currentUser.uid;
+
+                    props.navigation.replace("MyAccount", {
+                      currentUserid: currentUserid,
+                    });
+                  })
+                  .catch((error) => {
+                    alert(error);
+                  });
+              } else {
+                alert("vérifier password");
+              }
             }}
             color={"gray"}
             title="Create"
-          />
+          ></Button>
           <Button
             onPress={() => {
               props.navigation.goBack();
             }}
             color={"gray"}
             title="Back"
-          />
+          ></Button>
         </View>
       </View>
       <StatusBar style="dark" />
@@ -79,18 +98,18 @@ export default function NewUser(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "pink",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "yellow",
+    alignItems: "center", // alignement horizontal
+    justifyContent: "center", // aligement vertical
   },
   input: {
-    height: 50,
     width: "95%",
+    height: 50,
     backgroundColor: "#fff5",
     marginBottom: 15,
     borderWidth: 1,
     borderColor: "black",
-    borderRadius: 5,
+    borderRadius: 4,
     textAlign: "center",
   },
 });

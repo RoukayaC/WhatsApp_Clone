@@ -1,17 +1,21 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
 import {
+  BackHandler,
   Button,
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
   View,
-  ImageBackground,
-  BackHandler,
 } from "react-native";
+import firebase from "../Config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+const auth = firebase.auth();
 
 export default function Auth(props) {
-  console.log(props);
+  const [email, setemail] = useState("roukaya@gmail.com");
+  const [password, setPassword] = useState("111111");
   return (
     <ImageBackground
       source={require("../assets/bg.jpg")}
@@ -35,45 +39,68 @@ export default function Auth(props) {
             fontWeight: "bold",
           }}
         >
-          Welcome
+          BienVenue
         </Text>
 
         <TextInput
+          value={email}
+          onChangeText={(ch) => {
+            setemail(ch);
+          }}
           keyboardType="email-address"
           style={styles.input}
-          placeholder="name@gmail.com"
-        ></TextInput>
+          placeholder="name@site.com"
+        />
 
-        <TextInput style={styles.input} placeholder="password"></TextInput>
+        <TextInput
+          value={password}
+          onChangeText={(ch) => setPassword(ch)}
+          secureTextEntry={true}
+          style={styles.input}
+          placeholder="***password***"
+        />
+
         <View style={{ flexDirection: "row", gap: 15 }}>
           <Button
             onPress={() => {
-              props.navigation.navigate("Home");
+              auth
+                .signInWithEmailAndPassword(email, password)
+                .then(() => {
+                  const currentUserid = auth.currentUser.uid;
+                  props.navigation.replace("Home", {
+                    currentUserid: currentUserid,
+                  });
+                })
+                .catch((error) => {
+                  alert(error.message);
+                });
             }}
             color={"gray"}
             title="Submit"
-          />
+          ></Button>
           <Button
             onPress={() => {
               BackHandler.exitApp();
             }}
             color={"gray"}
             title="Exit"
-          />
+          ></Button>
         </View>
         <Text
-          onPress={() => props.navigation.navigate("NewUser")}
+          onPress={() => {
+            props.navigation.navigate("NewUser");
+          }}
           style={{
-            marginTop: 25,
+            marginTop: 15,
             width: "100%",
             textAlign: "right",
-            marginRight: 25,
-            fontFamily: "bold",
-            fontSize: 16,
+            marginRight: 15,
+            fontSize: 14,
+            fontWeight: "bold",
             color: "white",
           }}
         >
-          Create New Account
+          Create new account
         </Text>
       </View>
       <StatusBar style="dark" />
@@ -84,18 +111,18 @@ export default function Auth(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "pink",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "yellow",
+    alignItems: "center", // alignement horizontal
+    justifyContent: "center", // aligement vertical
   },
   input: {
-    height: 50,
     width: "95%",
+    height: 50,
     backgroundColor: "#fff5",
     marginBottom: 15,
     borderWidth: 1,
     borderColor: "black",
-    borderRadius: 5,
+    borderRadius: 4,
     textAlign: "center",
   },
 });
