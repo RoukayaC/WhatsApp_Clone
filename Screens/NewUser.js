@@ -66,8 +66,7 @@ export default function NewUser(props) {
                   .createUserWithEmailAndPassword(email, password)
                   .then(() => {
                     const currentUserid = auth.currentUser.uid;
-
-                    props.navigation.replace("MyAccount", {
+                    props.navigation.replace("Home", {
                       currentUserid: currentUserid,
                     });
                   })

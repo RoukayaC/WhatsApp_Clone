@@ -9,8 +9,9 @@ import {
   View,
 } from "react-native";
 import firebase from "../Config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+//import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
+
 const auth = firebase.auth();
 
 export default function Auth(props) {

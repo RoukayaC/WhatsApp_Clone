@@ -59,7 +59,7 @@ export default function ListProfils(props) {
         }}
         placeholder="Search account ..."
       ></TextInput>
-      //afficher data
+      {/* afficher data */}
       <FlatList
         data={data}
         renderItem={({ item }) => {
@@ -75,9 +75,13 @@ export default function ListProfils(props) {
               }}
             >
               <Image
-                source={require("../../assets/profil.png")}
+                source={
+                  item.urlImage
+                    ? { uri: item.urlImage } // Fixed: Changed from urlImage to item.urlImage
+                    : require("../../assets/profil.png")
+                }
                 style={styles.profileImage}
-              ></Image>
+              />
               <Text
                 onPress={() => {
                   props.navigation.navigate("Chat", {
@@ -103,16 +107,17 @@ export default function ListProfils(props) {
           );
         }}
         style={{ width: "98%" }}
-      ></FlatList>
+      />
     </ImageBackground>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    alignItems: "center", // align horiz
-    justifyContent: "center", // align verti
+    alignItems: "center",
+    justifyContent: "center",
   },
   profileImage: {
     width: 50,
