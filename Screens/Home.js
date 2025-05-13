@@ -1,5 +1,3 @@
-import { View, Text } from "react-native";
-import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import ListProfils from "./Home/ListProfils";
 import Groups from "./Home/Groups";
