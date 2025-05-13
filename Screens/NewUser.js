@@ -10,6 +10,9 @@ import {
 } from "react-native";
 import firebase from "../Config";
 const auth = firebase.auth();
+const database = firebase.database();
+const ref_database = database.ref();
+const ref_listaccount = ref_database.child("ListAccounts");
 
 export default function NewUser(props) {
   const [email, setEmail] = useState();
@@ -66,7 +69,16 @@ export default function NewUser(props) {
                   .createUserWithEmailAndPassword(email, password)
                   .then(() => {
                     const currentUserid = auth.currentUser.uid;
-                    props.navigation.replace("Home", {
+                    {
+                      /* to show the status of the user connected or not*/
+                    }
+                    const ref_myaccount = ref_listaccount.child(currentUserid);
+                    ref_myaccount.set({
+                      id: currentUserid,
+                      connected: true,
+                    });
+
+                    props.navigation.replace("MyAccount", {
                       currentUserid: currentUserid,
                     });
                   })

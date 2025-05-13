@@ -9,9 +9,10 @@ import {
   View,
 } from "react-native";
 import firebase from "../Config";
-//import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-
+const database = firebase.database();
+const ref_database = database.ref();
+const ref_listaccount = ref_database.child("ListAccounts");
 const auth = firebase.auth();
 
 export default function Auth(props) {
@@ -68,6 +69,14 @@ export default function Auth(props) {
                 .signInWithEmailAndPassword(email, password)
                 .then(() => {
                   const currentUserid = auth.currentUser.uid;
+                  {
+                    /* to show the status of the user connected or not*/
+                  }
+                  const ref_myaccount = ref_listaccount.child(currentUserid);
+                  ref_myaccount.update({
+                    id: currentUserid,
+                    connected: true,
+                  });
                   props.navigation.replace("Home", {
                     currentUserid: currentUserid,
                   });

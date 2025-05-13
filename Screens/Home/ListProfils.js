@@ -63,6 +63,9 @@ export default function ListProfils(props) {
       <FlatList
         data={data}
         renderItem={({ item }) => {
+          console.log("item", item);
+          const color = item.connected ? "green" : "red";
+          // to show the image of the user
           return (
             <View
               style={{
@@ -77,7 +80,7 @@ export default function ListProfils(props) {
               <Image
                 source={
                   item.urlImage
-                    ? { uri: item.urlImage } // Fixed: Changed from urlImage to item.urlImage
+                    ? { uri: item.urlImage } //show the image of the user
                     : require("../../assets/profil.png")
                 }
                 style={styles.profileImage}
@@ -103,6 +106,17 @@ export default function ListProfils(props) {
               >
                 {item.numero}
               </Text>
+
+              {/* to show the status of the user connected or not*/}
+
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  backgroundColor: color,
+                }}
+              ></View>
             </View>
           );
         }}

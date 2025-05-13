@@ -80,7 +80,7 @@ export default function MyAccount(props) {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"], // Fixed: Added missing comma here
+      mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -146,17 +146,15 @@ export default function MyAccount(props) {
       />
       <Button
         onPress={async () => {
-          let urlImage = null;
-          if (!isDefaultImage && localUriImage) {
-            urlImage = await uploadImageToStorage(localUriImage);
-          }
+          const urlImage = await uploadImageToStorage(localUriImage);
+          console.log("urlImage", urlImage);
 
           const ref_account = ref_listaccount.child(currentUserid);
-          ref_account.set({
+          await ref_account.update({
             id: currentUserid,
             pseudo,
             numero,
-            urlImage,
+            urlImage: urlImage,
           });
           Alert.alert("Success", "Profile saved successfully!");
         }}
@@ -166,6 +164,11 @@ export default function MyAccount(props) {
         onPress={() => {
           auth.signOut().then(() => {
             props.navigation.replace("Auth");
+            const ref_account = ref_listaccount.child(currentUserid);
+            ref_account.update({
+              id: currentUserid,
+              connected: false,
+            });
           });
         }}
         title="Deconnect"
