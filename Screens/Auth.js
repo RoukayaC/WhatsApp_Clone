@@ -28,9 +28,15 @@ export default function Auth(props) {
           alignItems: "center",
           justifyContent: "center",
           width: "98%",
-          height: 300,
-          backgroundColor: "#0003",
-          borderRadius: 5,
+          height: 350,
+          backgroundColor: "rgba(0,0,0,0.6)",
+          borderRadius: 12,
+          padding: 20,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
         }}
       >
         <Text
@@ -39,9 +45,10 @@ export default function Auth(props) {
             fontSize: 34,
             fontStyle: "italic",
             fontWeight: "bold",
+            marginBottom: 20,
           }}
         >
-          BienVenue
+          WELOCOME
         </Text>
 
         <TextInput
@@ -62,7 +69,7 @@ export default function Auth(props) {
           placeholder="***password***"
         />
 
-        <View style={{ flexDirection: "row", gap: 15 }}>
+        <View style={{ flexDirection: "row", gap: 15, marginTop: 10 }}>
           <Button
             onPress={() => {
               auth
@@ -108,6 +115,7 @@ export default function Auth(props) {
             fontSize: 14,
             fontWeight: "bold",
             color: "white",
+            textDecorationLine: "underline",
           }}
         >
           Create new account
@@ -122,17 +130,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "yellow",
-    alignItems: "center", // alignement horizontal
-    justifyContent: "center", // aligement vertical
+    justifyContent: "center",
   },
   input: {
     width: "95%",
     height: 50,
-    backgroundColor: "#fff5",
+    backgroundColor: "#fff8",
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 4,
+    borderColor: "#075E54",
+    borderRadius: 8,
     textAlign: "center",
+    paddingHorizontal: 15,
+    fontSize: 16,
   },
 });

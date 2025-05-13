@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  View,
   Button,
   Image,
   ImageBackground,
@@ -99,12 +100,13 @@ export default function MyAccount(props) {
     >
       <Text
         style={{
-          fontSize: 32,
-          color: "#11A",
+          fontSize: 28, // ADDED: Larger font
+          color: "#075E54", // ADDED: WhatsApp green
           fontWeight: "bold",
+          marginBottom: 20, // ADDED: More space below
         }}
       >
-        MyAccount
+        My Account
       </Text>
       <TouchableOpacity
         onPress={() => {
@@ -118,61 +120,127 @@ export default function MyAccount(props) {
               : { uri: localUriImage }
           }
           style={{
-            width: 250,
-            height: 250,
+            width: 200,
+            height: 200,
             backgroundColor: "#0052",
-            borderRadius: 40,
-            marginBottom: 50,
+            borderRadius: 100,
+            marginBottom: 30,
+            borderWidth: 1,
+            borderColor: "#128C7E",
           }}
         />
       </TouchableOpacity>
+
       <TextInput
         onChangeText={(ch) => {
           setPseudo(ch);
         }}
-        style={styles.input}
+        style={{
+          color: "white",
+          borderWidth: 1,
+          borderColor: "white",
+          height: 50,
+          width: "80%",
+          backgroundColor: "rgba(0,0,0,0.6)",
+          marginBottom: 15,
+          borderRadius: 8,
+          textAlign: "center",
+          fontSize: 16,
+        }}
         placeholderTextColor={"white"}
-        placeholder="le pseudo"
+        placeholder="Username"
         value={pseudo}
       />
+
       <TextInput
         onChangeText={(ch) => {
           setNumero(ch);
         }}
-        style={styles.input}
+        style={{
+          color: "white",
+          borderWidth: 1,
+          borderColor: "white",
+          height: 50,
+          width: "80%",
+          backgroundColor: "rgba(0,0,0,0.6)",
+          marginBottom: 15,
+          borderRadius: 8,
+          textAlign: "center",
+          fontSize: 16,
+        }}
         placeholderTextColor={"white"}
-        placeholder="le numero"
+        placeholder="Phone Number"
         value={numero}
       />
-      <Button
-        onPress={async () => {
-          const urlImage = await uploadImageToStorage(localUriImage);
-          console.log("urlImage", urlImage);
 
-          const ref_account = ref_listaccount.child(currentUserid);
-          await ref_account.update({
-            id: currentUserid,
-            pseudo,
-            numero,
-            urlImage: urlImage,
-          });
-          Alert.alert("Success", "Profile saved successfully!");
+      <View
+        style={{
+          width: "35%",
+          marginTop: 20,
+          marginBottom: 10,
         }}
-        title="Save"
-      />
-      <Button
-        onPress={() => {
-          auth.signOut().then(() => {
-            props.navigation.replace("Auth");
-            const ref_account = ref_listaccount.child(currentUserid);
-            ref_account.update({
-              id: currentUserid,
-              connected: false,
-            });
-          });
-        }}
-        title="Deconnect"
-      />
+      >
+        {/* save button */}
+
+        <View
+          style={{
+            marginBottom: 15,
+            borderRadius: 8,
+            overflow: "hidden",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            elevation: 3,
+          }}
+        >
+          <Button
+            onPress={async () => {
+              const urlImage = await uploadImageToStorage(localUriImage);
+              console.log("urlImage", urlImage);
+
+              const ref_account = ref_listaccount.child(currentUserid);
+              await ref_account.update({
+                id: currentUserid,
+                pseudo,
+                numero,
+                urlImage: urlImage,
+              });
+              Alert.alert("Success", "Profile saved successfully!");
+            }}
+            title="SAVE PROFILE"
+            color="#128C7E"
+          />
+        </View>
+
+        {/* Logout button */}
+        <View
+          style={{
+            borderRadius: 8,
+            overflow: "hidden",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            elevation: 3,
+          }}
+        >
+          <Button
+            onPress={() => {
+              auth.signOut().then(() => {
+                props.navigation.replace("Auth");
+                const ref_account = ref_listaccount.child(currentUserid);
+                ref_account.update({
+                  id: currentUserid,
+                  connected: false,
+                });
+              });
+            }}
+            title="LOGOUT"
+            color="#FF5252"
+          />
+        </View>
+      </View>
     </ImageBackground>
   );
 }

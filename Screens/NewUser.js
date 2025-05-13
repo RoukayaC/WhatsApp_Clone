@@ -21,7 +21,7 @@ export default function NewUser(props) {
 
   return (
     <ImageBackground
-      source={require("../assets/profil.png")}
+      source={require("../assets/bg.jpg")}
       style={styles.container}
     >
       <View
@@ -29,9 +29,9 @@ export default function NewUser(props) {
           alignItems: "center",
           justifyContent: "center",
           width: "98%",
-          height: 300,
-          backgroundColor: "#0003",
-          borderRadius: 5,
+          height: 350,
+          backgroundColor: "rgba(0,0,0,0.65)",
+          borderRadius: 10,
         }}
       >
         <Text
@@ -40,6 +40,7 @@ export default function NewUser(props) {
             fontSize: 34,
             fontStyle: "italic",
             fontWeight: "bold",
+            marginBottom: 20,
           }}
         >
           Create account
@@ -61,7 +62,8 @@ export default function NewUser(props) {
           style={styles.input}
           placeholder="***confirm password***"
         ></TextInput>
-        <View style={{ flexDirection: "row", gap: 15 }}>
+
+        <View style={{ flexDirection: "row", gap: 15, marginTop: 10 }}>
           <Button
             onPress={() => {
               if (password == confirmPassword) {
@@ -89,14 +91,14 @@ export default function NewUser(props) {
                 alert("vérifier password");
               }
             }}
-            color={"gray"}
+            color={"#666"}
             title="Create"
           ></Button>
           <Button
             onPress={() => {
               props.navigation.goBack();
             }}
-            color={"gray"}
+            color={"#666"}
             title="Back"
           ></Button>
         </View>
@@ -110,17 +112,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "yellow",
-    alignItems: "center", // alignement horizontal
-    justifyContent: "center", // aligement vertical
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     width: "95%",
     height: 50,
-    backgroundColor: "#fff5",
+    backgroundColor: "#fff7",
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 4,
+    borderColor: "#075E54",
+    borderRadius: 8,
     textAlign: "center",
+    fontSize: 16,
   },
 });
